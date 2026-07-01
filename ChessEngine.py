@@ -46,18 +46,23 @@ class GameState():
                         self.getRookMoves(r,c,moves)
         return moves
 
-    def getPawnMoves(self, r , c , moves):
+    def getPawnMoves(self, r, c, moves):
         if self.whiteToMove:
-            if self.board[r-1][c] == "--":
-                moves.append(Move((r,c),(r-1,c) , self.board))
-                if r == 6 and self.board[r-2][c] == "--":
-                    moves.append(Move((r,c),(r-2,c) , self.board))
-            if c-1 >= 0:
-                if self.board[r-1][c-1][0] == 'b':
-                    moves.append(Move((r-1, c-1), (r-1, c-1), self.board))
-            if c-1 <= len(self.board):
-                if self.board[r-1][c+1][0] == 'b':
-                    moves.append(Move((r-1, c+1), (r-1, c+1), self.board))
+            if self.board[r - 1][c] == "--":
+                moves.append(Move((r, c), (r - 1, c), self.board))
+
+                if r == 6 and self.board[r - 2][c] == "--":
+                    moves.append(Move((r, c), (r - 2, c), self.board))
+
+            # capture left
+            if c - 1 >= 0:
+                if self.board[r - 1][c - 1][0] == 'b':
+                    moves.append(Move((r, c), (r - 1, c - 1), self.board))
+
+            # capture right
+            if c + 1 < len(self.board):
+                if self.board[r - 1][c + 1][0] == 'b':
+                    moves.append(Move((r, c), (r - 1, c + 1), self.board))
 
     def getRookMoves(self , r , c , moves):
         pass
