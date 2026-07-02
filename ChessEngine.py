@@ -14,6 +14,8 @@ class GameState():
             ["wp" , "wp" , "wp" , "wp" , "wp" , "wp" , "wp" , "wp"],
             ["wR" , "wN" , "wB" , "wQ" , "wK" , "wB" , "wN" , "wR"]
         ]
+        self.moveFunctions = {'p' : self.getPawnMoves() , 'r' : self.getRookMoves(), 'N' : self.getKnightMoves() ,
+                              'Q' : self.getQueenMoves() , 'B' :self.getBishopMoves(), 'K' :self.getKingMoves()}
         self.whiteToMove = True
         self.moveLog = []
 
@@ -40,10 +42,7 @@ class GameState():
                 turn = self.board[r][c][0]
                 if (turn == 'w' and self.whiteToMove) or (turn == 'b' and not self.whiteToMove):
                     piece = self.board[r][c][1]
-                    if piece == 'p':
-                        self.getPawnMoves(r,c,moves)
-                    elif piece == 'R':
-                        self.getRookMoves(r,c,moves)
+                    self.moveFunctions[piece](r,c,moves)
         return moves
 
     def getPawnMoves(self, r, c, moves):
@@ -78,10 +77,20 @@ class GameState():
                 if self.board[r + 1][c + 1][0] == 'w':
                     moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
-    def getRookMoves(self , r , c , moves):
+    def getBishopMoves(self , r , c , moves):
         pass
 
+    def getKnightMoves(self , r , c , moves):
+        pass
 
+    def getQueenMoves(self , r , c , moves):
+        pass
+
+    def getKingMoves(self , r , c , moves):
+        pass
+
+    def getRookMoves(self , r , c , moves):
+        pass
 
 class Move():
 
