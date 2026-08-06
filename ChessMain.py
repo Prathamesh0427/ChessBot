@@ -1,8 +1,6 @@
 # for user input and display current state object
 
 import pygame as p
-from pygments.lexers.ruby import FancyLexer
-from six import moves
 
 import ChessEngine
 

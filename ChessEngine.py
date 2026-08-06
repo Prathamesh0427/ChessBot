@@ -1,7 +1,6 @@
 #current state of the game and also responsible for determining valid moves and also keep the move log
 
 
-
 class GameState():
     def __init__(self):
         self.board = [
@@ -14,8 +13,14 @@ class GameState():
             ["wp" , "wp" , "wp" , "wp" , "wp" , "wp" , "wp" , "wp"],
             ["wR" , "wN" , "wB" , "wQ" , "wK" , "wB" , "wN" , "wR"]
         ]
-        self.moveFunctions = {'p' : self.getPawnMoves() , 'r' : self.getRookMoves(), 'N' : self.getKnightMoves() ,
-                              'Q' : self.getQueenMoves() , 'B' :self.getBishopMoves(), 'K' :self.getKingMoves()}
+        self.moveFunctions = {
+            'p': self.getPawnMoves,
+            'R': self.getRookMoves,
+            'N': self.getKnightMoves,
+            'B': self.getBishopMoves,
+            'Q': self.getQueenMoves,
+            'K': self.getKingMoves
+        }
         self.whiteToMove = True
         self.moveLog = []
 
@@ -67,9 +72,9 @@ class GameState():
             if self.board[r+1][c] == "--":
                 moves.append(Move((r, c), (r + 1, c), self.board))
                 if r == 1 and self.board[r+2][c] == "--":
-                    moves.append(Move((r, c), (r + 1, c-1), self.board))
+                    moves.append(Move((r, c), (r + 2, c), self.board))
 
-            if c - 1 > 0:
+            if c - 1 >= 0:
                 if self.board[r+1][c-1][0] == "w":
                     moves.append(Move((r, c), (r + 1, c - 1), self.board))
 
@@ -77,9 +82,26 @@ class GameState():
                 if self.board[r + 1][c + 1][0] == 'w':
                     moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
-    def getBishopMoves(self , r , c , moves):
-        pass
+            #add pawn promotion later
 
+    def getRookMoves(self , r , c , moves):
+        directions = ((-1 , 0) , (0 , -1) , (1 , 0) , (0 , 1))
+        enemyColor = "b" if self.whiteToMove else "w"
+        for d in directions:
+            for i in range(1,8):
+                endRow = r + d[0] * i
+                endCol = c + d[1] * i
+                if 0 <= endRow < 8 and 0 <= endCol < 8:
+                    endPiece = self.board[endRow][endCol]
+                    if endPiece == '--':
+                        moves.append(Move((r, c), (endRow , endCol), self.board))
+                    elif endPiece[0] == enemyColor:
+                        moves.append(Move((r, c), (endRow , endCol), self.board))
+                        break
+                    else:
+                        break
+                else:
+                    break
     def getKnightMoves(self , r , c , moves):
         pass
 
@@ -89,7 +111,7 @@ class GameState():
     def getKingMoves(self , r , c , moves):
         pass
 
-    def getRookMoves(self , r , c , moves):
+    def getBishopMoves(self , r , c , moves):
         pass
 
 class Move():
